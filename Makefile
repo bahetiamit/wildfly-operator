@@ -1,4 +1,4 @@
-DOCKER_REPO ?= quay.io/wildfly/
+DOCKER_REPO ?= ptcttest/
 IMAGE ?= wildfly-operator
 TAG ?= latest
 PROG  := wildfly-operator
@@ -38,6 +38,13 @@ image: build
 ## push                  Push Docker image to the Quay.io repository.
 push: image
 	docker push "${DOCKER_REPO}$(IMAGE):$(TAG)"
+
+## pushmultiarch		 Compiles and pushes multi-architecure docker image
+pushmultiarch: tidy unit-test
+	VERSION="$(git describe --tags --always --dirty)"
+	PLATFORMS="linux/amd64,linux/ppc64le"
+	docker buildx create --use
+	docker buildx build --platform="${PLATFORMS}" --build-arg=VERSION=${VERSION} -t "${DOCKER_REPO}$(IMAGE):$(TAG)" . -f build/Dockerfile_multiarch --push
 
 ## clean                 Remove all generated build files.
 clean:
