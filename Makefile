@@ -39,12 +39,11 @@ image: build
 push: image
 	docker push "${DOCKER_REPO}$(IMAGE):$(TAG)"
 
-## pushmultiarch		 Compiles and pushes multi-architecure docker image
+## pushmultiarch		 Compiles and pushes multiarch docker images using buildx
 pushmultiarch: tidy unit-test
 	VERSION="$(git describe --tags --always --dirty)"
-	PLATFORMS="linux/amd64,linux/ppc64le"
 	docker buildx create --use
-	docker buildx build --platform="${PLATFORMS}" --build-arg=VERSION=${VERSION} -t "${DOCKER_REPO}$(IMAGE):$(TAG)" . -f build/Dockerfile_multiarch --push
+	docker buildx build --platform "linux/amd64,linux/ppc64le" --build-arg=VERSION=${VERSION} -t "${DOCKER_REPO}$(IMAGE):$(TAG)" . -f build/Dockerfile_multiarch --push
 
 ## clean                 Remove all generated build files.
 clean:
