@@ -7,9 +7,9 @@ env:
 
 on:
   push:
-    branches: [ master ]
+    branches: [ multiarch ]
   pull_request:
-    branches: [ master ]
+    branches: [ multiarch ]
 
 jobs:
 
