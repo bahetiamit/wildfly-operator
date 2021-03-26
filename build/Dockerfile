@@ -3,7 +3,7 @@ FROM golang:1.13 AS builder
 #This arg is passed by docker buildx & contains the platform info in the form linux/amd64, linux/ppc64le etc.
 ARG TARGETPLATFORM
 #Capture ARCH and write to /goarch file for further reference
-RUN [ ! "x" = "x$TARGETPLATFORM" ] && `echo $TARGETPLATFORM |  awk '{split($0,a,"/"); print a[2]}' > /goarch` || true
+RUN [ ! "x" = "x$TARGETPLATFORM" ] && `echo $TARGETPLATFORM |  awk '{split($0,a,"/"); print a[2]}' > /goarch` || amd64 > /goarch
 
 WORKDIR /go/src/github.com/wildfly/wildfly-operator
 RUN mkdir -p /go/src/github.com/wildfly/wildfly-operator && cd /go/src/github.com/wildfly/wildfly-operator
