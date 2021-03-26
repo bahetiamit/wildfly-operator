@@ -63,8 +63,8 @@ test-e2e-local: setup
 
 push-to-minikube-image-registry:
 	docker run -d -p 5000:5000 --restart=always --name image-registry registry || true
-	DOCKER_REPO="localhost:5000/" IMAGE="wildfly-operator" docker build -t "$(DOCKER_REPO)$(IMAGE):$(TAG)" . -f build/Dockerfile
-	docker push "$(DOCKER_REPO)$(IMAGE):$(TAG)"
+	docker build -t "localhost:5000/$(IMAGE):$(TAG)" . -f build/Dockerfile
+	docker push "localhost:5000/$(IMAGE):$(TAG)"
 
 ## test-e2e-minikube     Run e2e tests with a containerized operator in Minikube
 test-e2e-minikube: setup push-to-minikube-image-registry
