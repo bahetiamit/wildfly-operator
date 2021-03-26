@@ -1,4 +1,4 @@
-DOCKER_REPO ?= quay.io/wildfly/
+DOCKER_REPO ?= ptcttest/
 IMAGE ?= wildfly-operator
 TAG ?= latest
 PROG  := wildfly-operator
