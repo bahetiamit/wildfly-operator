@@ -3,6 +3,7 @@ FROM golang:1.13 AS builder
 #This arg is passed by docker buildx & contains the platform info in the form linux/amd64, linux/ppc64le etc.
 #Setting the default platform in case buildx is not used.
 ARG TARGETPLATFORM="linux/amd64"
+ARG VERSION
 #Capture ARCH and write to /goarch file for further reference
 RUN [ ! "x" = "x$TARGETPLATFORM" ] && `echo $TARGETPLATFORM |  awk '{split($0,a,"/"); print a[2]}' > /goarch`
 
@@ -14,7 +15,7 @@ RUN BIN_DIR=${2-$(pwd)/build/_output/bin} && \
     mkdir -p ${BIN_DIR} && PROJECT_NAME="wildfly-operator" && \
     REPO_PATH="github.com/wildfly/wildfly-operator" && \
     BUILD_PATH="${REPO_PATH}/cmd/manager" && \
-    GO_LDFLAGS="-linkmode external -extldflags -static" && \
+    GO_LDFLAGS="-X ${REPO_PATH}/version.Version=${VERSION} -linkmode external -extldflags -static" && \
     echo "building ${PROJECT_NAME}..." && \
     GOOS=linux  GOARCH=$(cat /goarch) CGO_ENABLED=0 && \
     go build -o ${BIN_DIR}/${PROJECT_NAME} -ldflags "${GO_LDFLAGS}" $BUILD_PATH
