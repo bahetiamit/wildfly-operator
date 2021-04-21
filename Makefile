@@ -1,3 +1,4 @@
+SHELL := /bin/bash -o pipefail
 DOCKER_REPO ?= ptcttest/
 IMAGE ?= wildfly-operator
 TAG ?= latest
