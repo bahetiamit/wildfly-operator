@@ -1,4 +1,3 @@
-SHELL := /bin/bash -o pipefail
 DOCKER_REPO ?= ptcttest/
 IMAGE ?= wildfly-operator
 TAG ?= latest
@@ -34,7 +33,7 @@ build: tidy unit-test
 
 ## push		 Compile and pushe multiarch docker image to Quay.io
 push: tidy unit-test
-	VER := $(shell git describe --tags --always --dirty)
+	VER = $(shell git describe --tags --always --dirty)
 	docker buildx create --use
 	docker buildx build --platform "linux/amd64,linux/ppc64le" --build-arg="VERSION=${VER}" -t "${DOCKER_REPO}$(IMAGE):$(TAG)" . -f build/Dockerfile --push
 
