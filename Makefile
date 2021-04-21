@@ -35,7 +35,7 @@ build: tidy unit-test
 push: tidy unit-test
 	VER=$(shell git describe --tags --always --dirty)
 	docker buildx create --use
-	docker buildx build --platform "linux/amd64,linux/ppc64le" --build-arg="VERSION=${VER}" -t "${DOCKER_REPO}$(IMAGE):$(TAG)" . -f build/Dockerfile --push
+	docker buildx build --platform "linux/amd64,linux/ppc64le" --build-arg VERSION="${VER}" -t "${DOCKER_REPO}$(IMAGE):$(TAG)" . -f build/Dockerfile --push
 
 ## clean                 Remove all generated build files.
 clean:
